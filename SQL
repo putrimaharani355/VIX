@@ -1,0 +1,52 @@
+# exploratory data analysis di dbeaver
+
+# query 1: Berapa rata-rata umur customer jika dilihat dari marital statusnya ?
+
+SELECT 
+    MaritalStatus,
+    AVG(Age) AS average_age
+FROM 
+    Customer
+GROUP BY 
+    MaritalStatus;
+
+# query 2 : Berapa rata-rata umur customer jika dilihat dari gender nya ?
+SELECT 
+    CASE
+        WHEN Gender = 0 THEN 'wanita'
+        WHEN Gender = 1 THEN 'pria'
+        ELSE 'unknown'
+    END AS Gender,
+    AVG(Age) AS average_age
+FROM 
+    Customer
+GROUP BY 
+    Gender;
+
+# query 3 : Tentukan nama store dengan total quantity terbanyak!
+SELECT
+    st.StoreName,
+    SUM(t.Qty) AS TotalQuantity
+FROM
+    transaction t 
+JOIN
+    store st ON t.StoreID = st.StoreID
+GROUP BY
+   	st.StoreName
+ORDER BY
+    TotalQuantity DESC
+LIMIT 1;
+
+# query 4 : Tentukan nama produk terlaris dengan total amount terbanyak!
+SELECT
+    p."Product Name",
+    SUM(t.TotalAmount) AS TotalAmount
+FROM
+    Product p
+JOIN
+    Transaction t ON p.ProductID = t.ProductID
+GROUP BY
+    p."Product Name"
+ORDER BY
+    TotalAmount DESC
+LIMIT 1;
